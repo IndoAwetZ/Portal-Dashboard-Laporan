@@ -99,6 +99,11 @@
   </main>
 
   <script>
+    // ==========================================
+    // GANTI DENGAN URL WORKER CLOUDFLARE ANDA:
+    // ==========================================
+    const API_BASE_URL = 'https://portal-pelaporan.jr-pro-and-co.workers.dev/';
+
     // --- Setup Periode Bulan Berjalan ---
     const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     const d = new Date();
@@ -107,10 +112,9 @@
     // --- Fetch & Render Data ---
     async function loadReports() {
       try {
-        const res = await fetch('/api/reports');
+        const res = await fetch(`${API_BASE_URL}/api/reports`);
         const data = await res.json();
 
-        // Hitung Ringkasan
         let total = data.length;
         let done = data.filter(r => r.status === 'SUDAH').length;
         let pending = total - done;
@@ -120,9 +124,8 @@
         document.getElementById('pendingCount').innerText = pending;
 
         const container = document.getElementById('cardContainer');
-        container.innerHTML = ''; // Bersihkan loading
+        container.innerHTML = '';
 
-        // Render Kartu
         data.forEach(r => {
           const isSudah = r.status === 'SUDAH';
           const badgeClass = isSudah ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-rose-100 text-rose-700 border-rose-200';
@@ -151,11 +154,9 @@
                 </div>
               </div>
               <div class="bg-slate-50 border-t border-slate-100 p-3 grid grid-cols-2 gap-2">
-                 <!-- Tombol Embedded Buka Proxy URL -->
                 <button onclick="openEmbedded('${r.proxy_url}', '${r.name}', '${r.portal_url}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
                   Buka Portal <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
                 </button>
-                <!-- Tombol Checklist Manual -->
                 <button onclick="toggleStatus('${r.id}')" class="flex items-center justify-center w-full py-2 bg-white border border-slate-300 hover:bg-slate-50 ${btnStatusClass} text-xs font-semibold rounded transition shadow-sm">
                   ${btnStatusText} <i class="fa-solid fa-check-double ml-2"></i>
                 </button>
@@ -165,33 +166,35 @@
           container.innerHTML += card;
         });
       } catch (err) {
-        document.getElementById('cardContainer').innerHTML = `<div class="col-span-full text-center py-10 text-rose-500"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><p>Gagal memuat data dari server.</p></div>`;
+        document.getElementById('cardContainer').innerHTML = `<div class="col-span-full text-center py-10 text-rose-500"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><p>Gagal memuat data dari server Worker.</p></div>`;
         console.error('Fetch error:', err);
       }
     }
 
-    // --- Fungsi Ubah Status (Manual Checklist) ---
+    // --- Ubah Status (Manual Checklist) ---
     async function toggleStatus(id) {
-      if(!confirm('Anda yakin ingin mengubah status pelaporan ini?')) return;
+      if (!confirm('Anda yakin ingin mengubah status pelaporan ini?')) return;
       try {
-        await fetch(\`/api/reports/\${id}/toggle\`, { method: 'POST' });
-        loadReports(); // Refresh data setelah update
+        await fetch(`${API_BASE_URL}/api/reports/${id}/toggle`, { method: 'POST' });
+        loadReports();
       } catch (err) {
         alert('Gagal mengubah status.');
       }
     }
 
-    // --- Fungsi Iframe / Embedded Web ---
-    function openEmbedded(proxyUrl, title, originalUrl) {
+    // --- Iframe Embedded via Proxy Worker ---
+    function openEmbedded(proxyPath, title, originalUrl) {
       const container = document.getElementById('iframeContainer');
       const iframe = document.getElementById('embeddedFrame');
       const loading = document.getElementById('iframeLoading');
       
-      loading.style.display = 'flex'; // Tampilkan loading
+      loading.style.display = 'flex';
       document.getElementById('iframeTitle').innerText = title;
-      document.getElementById('iframeExternalLink').href = originalUrl; // Fallback jika iframe tetap error
+      document.getElementById('iframeExternalLink').href = originalUrl;
       
-      iframe.src = proxyUrl; // Gunakan URL Proxy!
+      // Jika proxyPath berupa path relatif (/proxy-mpdn...), gabungkan dengan URL Worker
+      const targetSrc = proxyPath.startsWith('http') ? proxyPath : `${API_BASE_URL}${proxyPath}`;
+      iframe.src = targetSrc;
       
       container.classList.remove('hidden');
       setTimeout(() => {
@@ -202,10 +205,9 @@
     function closeIframe() {
       const container = document.getElementById('iframeContainer');
       container.classList.add('hidden');
-      document.getElementById('embeddedFrame').src = ''; // Bersihkan source
+      document.getElementById('embeddedFrame').src = '';
     }
 
-    // --- Inisialisasi ---
     document.addEventListener('DOMContentLoaded', loadReports);
   </script>
 </body>
