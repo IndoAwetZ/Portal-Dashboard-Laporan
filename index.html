@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Monitoring Pelaporan Prognas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+  <!-- Header / Navbar -->
+  <header class="bg-indigo-700 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-hospital-user text-2xl"></i>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">Portal Pelaporan Program Nasional (Prognas)</h1>
+          <p class="text-xs text-indigo-200">Monitoring & Akses Satu Pintu Pelaporan Kemenkes RI</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-900 text-indigo-100">
+          <i class="fa-regular fa-calendar-days mr-1.5"></i> Periode: <span id="currentPeriod" class="ml-1">Agustus 2026</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Utama -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Baris Ringkasan & Aksi -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Laporan</p>
+          <p class="text-2xl font-bold text-slate-800" id="totalCount">5</p>
+        </div>
+        <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-emerald-600 uppercase tracking-wider">Sudah Dilaporkan</p>
+          <p class="text-2xl font-bold text-emerald-600" id="doneCount">1</p>
+        </div>
+        <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-rose-600 uppercase tracking-wider">Belum Dilaporkan</p>
+          <p class="text-2xl font-bold text-rose-600" id="pendingCount">4</p>
+        </div>
+        <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+        <div>
+          <button onclick="triggerAutoCheck()" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-arrows-rotate" id="syncIcon"></i> Cek Status Otomatis
+          </button>
+          <p class="text-[11px] text-slate-400 mt-1.5 text-center">Sinkronisasi status terkini</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid Daftar Laporan Prognas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cardContainer">
+      
+      <!-- Kartu 1: MPDN -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">Kematian Maternal & Perinatal</span>
+              <h3 class="text-lg font-bold text-slate-800 mt-1">MPDN Kemenkes</h3>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">
+              <i class="fa-solid fa-xmark mr-1"></i> Belum Lapor
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Pelaporan notifikasi dan audit kematian ibu dan bayi baru lahir.</p>
+          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
+            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">PONEK / Kebidanan</strong></div>
+            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 25 Tiap Bulan</strong></div>
+            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">29 Agu 2026, 07:00</span></div>
+          </div>
+        </div>
+        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
+          <a href="https://mpdn.kemkes.go.id/masuk" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
+            Buka Portal MPDN <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
+          </a>
+          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(1)">Ubah Status</button>
+        </div>
+      </div>
+
+      <!-- Kartu 2: SITB (TB) -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-amber-50 text-amber-600 border border-amber-200">Tuberkulosis</span>
+              <h3 class="text-lg font-bold text-slate-800 mt-1">SITB Online</h3>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+              <i class="fa-solid fa-check mr-1"></i> Sudah Lapor
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Sistem Informasi Tuberkulosis terintegrasi pengobatan dan hasil lab.</p>
+          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
+            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">Tim TB DOTS</strong></div>
+            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 10 Tiap Bulan</strong></div>
+            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">28 Agu 2026, 15:30</span></div>
+          </div>
+        </div>
+        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
+          <a href="https://sitb.kemkes.go.id" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
+            Buka Portal SITB <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
+          </a>
+          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(2)">Ubah Status</button>
+        </div>
+      </div>
+
+      <!-- Kartu 3: SIHA (HIV/AIDS) -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200">HIV / AIDS</span>
+              <h3 class="text-lg font-bold text-slate-800 mt-1">SIHA 2.1</h3>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">
+              <i class="fa-solid fa-xmark mr-1"></i> Belum Lapor
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Pencatatan konseling, testing HIV, dan pengobatan ART.</p>
+          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
+            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">Klinik VCT / Poli HIV</strong></div>
+            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 15 Tiap Bulan</strong></div>
+            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">29 Agu 2026, 07:00</span></div>
+          </div>
+        </div>
+        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
+          <a href="https://siha.kemkes.go.id" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
+            Buka Portal SIHA <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
+          </a>
+          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(3)">Ubah Status</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function triggerAutoCheck() {
+      const icon = document.getElementById('syncIcon');
+      icon.classList.add('fa-spin');
+      
+      // Simulasi trigger API checker
+      setTimeout(() => {
+        icon.classList.remove('fa-spin');
+        alert('Pengecekan selesai! Status laporan telah diperbarui.');
+      }, 2000);
+    }
+
+    function toggleManual(id) {
+      alert('Status pelaporan berhasil diperbarui secara manual.');
+    }
+  </script>
+</body>
+</html>
