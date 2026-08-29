@@ -1,0 +1,18 @@
+# Dependensi
+node_modules/
+
+# Environment variables & kredensial rahasia
+.env
+
+# Database SQLite & file runtime
+*.db
+*.db-journal
+data.db
+
+# Log & file screenshot saat debug
+*.log
+*.png
+
+# Playwright cache & testing artifacts
+test-results/
+playwright-report/
