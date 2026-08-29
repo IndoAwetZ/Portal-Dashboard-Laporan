@@ -7,16 +7,16 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
-  <!-- Header / Navbar -->
+  <!-- Header -->
   <header class="bg-indigo-700 text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <i class="fa-solid fa-hospital-user text-2xl"></i>
         <div>
-          <h1 class="text-xl font-bold leading-tight">Portal Pelaporan Prognas</h1>
-          <p class="text-xs text-indigo-200">Monitoring & Akses Satu Pintu</p>
+          <h1 class="text-xl font-bold leading-tight">Portal Pelaporan Program Nasional (Prognas)</h1>
+          <p class="text-xs text-indigo-200">Monitoring & Akses Satu Pintu Pelaporan Kemenkes RI</p>
         </div>
       </div>
       <div class="text-right">
@@ -27,8 +27,8 @@
     </div>
   </header>
 
-  <!-- Container Utama -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Konten Utama -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
     
     <!-- Baris Ringkasan -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -63,53 +63,31 @@
       </div>
     </div>
 
-    <!-- Grid Daftar Laporan Prognas -->
+    <!-- Grid Daftar Laporan -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cardContainer">
-      <!-- Loading State / Kartu akan di-render di sini oleh JavaScript -->
-      <div class="col-span-full text-center py-10 text-slate-500">
-        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i>
-        <p>Memuat data laporan...</p>
+      <div class="col-span-full text-center py-16 text-slate-500">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-indigo-600"></i>
+        <p class="text-sm">Menghubungkan data ke Cloudflare D1...</p>
       </div>
-    </div>
-
-    <!-- Container Iframe Embedded -->
-    <div id="iframeContainer" class="hidden mt-10 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col" style="height: 85vh;">
-      <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-window-maximize text-slate-300"></i>
-            <span id="iframeTitle" class="text-sm font-semibold tracking-wide">Memuat Portal...</span>
-        </div>
-        <div class="flex space-x-3">
-             <a id="iframeExternalLink" href="#" target="_blank" class="text-xs text-slate-300 hover:text-white flex items-center bg-slate-700 px-2 py-1 rounded">
-                Buka di Tab Baru <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-            </a>
-            <button onclick="closeIframe()" class="text-xs text-white bg-rose-600 hover:bg-rose-500 px-3 py-1 rounded shadow transition">
-            <i class="fa-solid fa-xmark mr-1"></i> Tutup
-            </button>
-        </div>
-      </div>
-      <!-- Spinner Loading Iframe -->
-       <div id="iframeLoading" class="w-full h-full flex flex-col items-center justify-center bg-slate-50 absolute z-0">
-          <i class="fa-solid fa-circle-notch fa-spin text-indigo-500 text-3xl mb-3"></i>
-          <p class="text-slate-500 text-sm">Menghubungkan ke server Kemenkes...</p>
-      </div>
-      <iframe id="embeddedFrame" src="" class="w-full h-full border-none relative z-10 bg-white" onload="document.getElementById('iframeLoading').style.display='none'"></iframe>
     </div>
 
   </main>
 
-  <script>
-    // ==========================================
-    // GANTI DENGAN URL WORKER CLOUDFLARE ANDA:
-    // ==========================================
-    const API_BASE_URL = 'https://portal-pelaporan.jr-pro-and-co.workers.dev/';
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+    Portal Monitoring Internal Faskes &copy; 2026
+  </footer>
 
-    // --- Setup Periode Bulan Berjalan ---
+  <script>
+    // URL Backend Cloudflare Worker Anda (Pastikan tanpa trailing slash '/')
+    const API_BASE_URL = 'https://portal-pelaporan.jr-pro-and-co.workers.dev';
+
+    // Set Label Bulan Berjalan
     const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     const d = new Date();
     document.getElementById('currentPeriodDisplay').innerText = months[d.getMonth()] + " " + d.getFullYear();
 
-    // --- Fetch & Render Data ---
+    // Fetch dan Tampilkan Data dari Worker
     async function loadReports() {
       try {
         const res = await fetch(`${API_BASE_URL}/api/reports`);
@@ -132,7 +110,7 @@
           const badgeIcon = isSudah ? 'fa-check' : 'fa-xmark';
           const badgeText = isSudah ? 'Sudah Lapor' : 'Belum Lapor';
           const btnStatusText = isSudah ? 'Tandai Belum' : 'Tandai Selesai';
-          const btnStatusClass = isSudah ? 'text-amber-600 hover:text-amber-700' : 'text-emerald-600 hover:text-emerald-700';
+          const btnStatusClass = isSudah ? 'text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 border-amber-200' : 'text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border-emerald-200';
 
           const card = `
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
@@ -150,14 +128,16 @@
                 <div class="text-[12px] text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
                   <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">${r.pic}</strong></div>
                   <div class="flex justify-between"><span>Tenggat:</span> <strong class="text-rose-600">Tanggal ${r.deadline_day}</strong></div>
-                  <div class="flex justify-between"><span>Update:</span> <span class="text-slate-400 italic">${r.last_checked || '-'}</span></div>
+                  <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-400 italic">${r.last_checked || '-'}</span></div>
                 </div>
               </div>
               <div class="bg-slate-50 border-t border-slate-100 p-3 grid grid-cols-2 gap-2">
-                <button onclick="openEmbedded('${r.proxy_url}', '${r.name}', '${r.portal_url}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
-                  Buka Portal <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                <!-- Buka Floating Workspace Window -->
+                <button onclick="openPrognasWindow('${r.portal_url}', '${r.name}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
+                  Buka Portal <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
                 </button>
-                <button onclick="toggleStatus('${r.id}')" class="flex items-center justify-center w-full py-2 bg-white border border-slate-300 hover:bg-slate-50 ${btnStatusClass} text-xs font-semibold rounded transition shadow-sm">
+                <!-- Toggle Checklist Status -->
+                <button onclick="toggleStatus('${r.id}')" class="flex items-center justify-center w-full py-2 border ${btnStatusClass} text-xs font-semibold rounded transition shadow-sm">
                   ${btnStatusText} <i class="fa-solid fa-check-double ml-2"></i>
                 </button>
               </div>
@@ -166,46 +146,45 @@
           container.innerHTML += card;
         });
       } catch (err) {
-        document.getElementById('cardContainer').innerHTML = `<div class="col-span-full text-center py-10 text-rose-500"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><p>Gagal memuat data dari server Worker.</p></div>`;
-        console.error('Fetch error:', err);
+        document.getElementById('cardContainer').innerHTML = `
+          <div class="col-span-full text-center py-12 text-rose-500">
+            <i class="fa-solid fa-triangle-exclamation text-3xl mb-2"></i>
+            <p class="font-semibold">Gagal memuat data dari Cloudflare Worker.</p>
+          </div>`;
       }
     }
 
-    // --- Ubah Status (Manual Checklist) ---
+    // Fungsi Toggle Status
     async function toggleStatus(id) {
-      if (!confirm('Anda yakin ingin mengubah status pelaporan ini?')) return;
       try {
         await fetch(`${API_BASE_URL}/api/reports/${id}/toggle`, { method: 'POST' });
         loadReports();
       } catch (err) {
-        alert('Gagal mengubah status.');
+        alert('Gagal memperbarui status');
       }
     }
 
-    // --- Iframe Embedded via Proxy Worker ---
-    function openEmbedded(proxyPath, title, originalUrl) {
-      const container = document.getElementById('iframeContainer');
-      const iframe = document.getElementById('embeddedFrame');
-      const loading = document.getElementById('iframeLoading');
-      
-      loading.style.display = 'flex';
-      document.getElementById('iframeTitle').innerText = title;
-      document.getElementById('iframeExternalLink').href = originalUrl;
-      
-      // Jika proxyPath berupa path relatif (/proxy-mpdn...), gabungkan dengan URL Worker
-      const targetSrc = proxyPath.startsWith('http') ? proxyPath : `${API_BASE_URL}${proxyPath}`;
-      iframe.src = targetSrc;
-      
-      container.classList.remove('hidden');
-      setTimeout(() => {
-        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
+    // Fungsi Floating Workspace Window (Jendela Melayang)
+    function openPrognasWindow(url, title) {
+      const width = Math.min(1280, window.screen.width * 0.9);
+      const height = Math.min(850, window.screen.height * 0.85);
+      const left = (window.screen.width - width) / 2;
+      const top = (window.screen.height - height) / 2;
 
-    function closeIframe() {
-      const container = document.getElementById('iframeContainer');
-      container.classList.add('hidden');
-      document.getElementById('embeddedFrame').src = '';
+      const features = [
+        `width=${width}`,
+        `height=${height}`,
+        `top=${top}`,
+        `left=${left}`,
+        'status=yes',
+        'toolbar=no',
+        'menubar=no',
+        'location=yes',
+        'resizable=yes',
+        'scrollbars=yes'
+      ].join(',');
+
+      window.open(url, 'PrognasApp_' + title.replace(/\s+/g, ''), features);
     }
 
     document.addEventListener('DOMContentLoaded', loadReports);
