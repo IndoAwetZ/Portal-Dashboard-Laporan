@@ -132,8 +132,8 @@
                 </div>
               </div>
               <div class="bg-slate-50 border-t border-slate-100 p-3 grid grid-cols-2 gap-2">
-                <!-- Buka Floating Workspace Window -->
-                <button onclick="openPrognasWindow('${r.portal_url}', '${r.name}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
+                <!-- Ganti parameter pemanggilan menjadi (url, id) -->
+                <button onclick="openPrognasWindow('${r.portal_url}', '${r.id}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
                   Buka Portal <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
                 </button>
                 <!-- Toggle Checklist Status -->
@@ -154,18 +154,17 @@
       }
     }
 
-    // Fungsi Toggle Status
-    async function toggleStatus(id) {
-      try {
-        await fetch(`${API_BASE_URL}/api/reports/${id}/toggle`, { method: 'POST' });
-        loadReports();
-      } catch (err) {
-        alert('Gagal memperbarui status');
-      }
-    }
+    // Object untuk mencatat jendela yang sedang aktif
+    const activeWindows = {};
 
-    // Fungsi Floating Workspace Window (Jendela Melayang)
-    function openPrognasWindow(url, title) {
+    function openPrognasWindow(url, id) {
+      // Cek apakah jendela untuk portal ini sudah pernah dibuka dan belum ditutup
+      if (activeWindows[id] && !activeWindows[id].closed) {
+        activeWindows[id].focus(); // Bawa jendela yang sudah ada ke paling depan
+        return;
+      }
+
+      // Tentukan ukuran jendela kerja khusus
       const width = Math.min(1280, window.screen.width * 0.9);
       const height = Math.min(850, window.screen.height * 0.85);
       const left = (window.screen.width - width) / 2;
@@ -184,7 +183,15 @@
         'scrollbars=yes'
       ].join(',');
 
-      window.open(url, 'PrognasApp_' + title.replace(/\s+/g, ''), features);
+      // Berikan window name statis berdasarkan ID laporan (misal: PrognasWindow_mpdn)
+      const windowName = `PrognasWindow_${id}`;
+      
+      // Buka dan simpan referensi instance jendela
+      activeWindows[id] = window.open(url, windowName, features);
+
+      if (activeWindows[id]) {
+        activeWindows[id].focus();
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadReports);
