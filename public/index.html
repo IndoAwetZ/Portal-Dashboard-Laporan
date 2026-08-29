@@ -15,13 +15,13 @@
       <div class="flex items-center space-x-3">
         <i class="fa-solid fa-hospital-user text-2xl"></i>
         <div>
-          <h1 class="text-xl font-bold leading-tight">Portal Pelaporan Program Nasional (Prognas)</h1>
-          <p class="text-xs text-indigo-200">Monitoring & Akses Satu Pintu Pelaporan Kemenkes RI</p>
+          <h1 class="text-xl font-bold leading-tight">Portal Pelaporan Prognas</h1>
+          <p class="text-xs text-indigo-200">Monitoring & Akses Satu Pintu</p>
         </div>
       </div>
       <div class="text-right">
         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-900 text-indigo-100">
-          <i class="fa-regular fa-calendar-days mr-1.5"></i> Periode: <span id="currentPeriod" class="ml-1">Agustus 2026</span>
+          <i class="fa-regular fa-calendar-days mr-1.5"></i> <span id="currentPeriodDisplay">Agustus 2026</span>
         </span>
       </div>
     </div>
@@ -30,12 +30,12 @@
   <!-- Container Utama -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <!-- Baris Ringkasan & Aksi -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+    <!-- Baris Ringkasan -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
         <div>
           <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Laporan</p>
-          <p class="text-2xl font-bold text-slate-800" id="totalCount">5</p>
+          <p class="text-2xl font-bold text-slate-800" id="totalCount">-</p>
         </div>
         <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center">
           <i class="fa-solid fa-list-check"></i>
@@ -45,7 +45,7 @@
       <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
         <div>
           <p class="text-xs font-medium text-emerald-600 uppercase tracking-wider">Sudah Dilaporkan</p>
-          <p class="text-2xl font-bold text-emerald-600" id="doneCount">1</p>
+          <p class="text-2xl font-bold text-emerald-600" id="doneCount">-</p>
         </div>
         <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
           <i class="fa-solid fa-circle-check"></i>
@@ -55,116 +55,62 @@
       <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
         <div>
           <p class="text-xs font-medium text-rose-600 uppercase tracking-wider">Belum Dilaporkan</p>
-          <p class="text-2xl font-bold text-rose-600" id="pendingCount">4</p>
+          <p class="text-2xl font-bold text-rose-600" id="pendingCount">-</p>
         </div>
         <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center">
           <i class="fa-solid fa-circle-exclamation"></i>
-        </div>
-      </div>
-
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
-        <div>
-          <button onclick="triggerAutoCheck()" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition">
-            <i class="fa-solid fa-arrows-rotate" id="syncIcon"></i> Cek Status Otomatis
-          </button>
-          <p class="text-[11px] text-slate-400 mt-1.5 text-center">Sinkronisasi status terkini</p>
         </div>
       </div>
     </div>
 
     <!-- Grid Daftar Laporan Prognas -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cardContainer">
-      
-      <!-- Kartu 1: MPDN -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
-        <div class="p-6">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">Kematian Maternal & Perinatal</span>
-              <h3 class="text-lg font-bold text-slate-800 mt-1">MPDN Kemenkes</h3>
-            </div>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">
-              <i class="fa-solid fa-xmark mr-1"></i> Belum Lapor
-            </span>
-          </div>
-          <p class="text-xs text-slate-500 mb-4">Pelaporan notifikasi dan audit kematian ibu dan bayi baru lahir.</p>
-          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
-            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">PONEK / Kebidanan</strong></div>
-            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 25 Tiap Bulan</strong></div>
-            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">29 Agu 2026, 07:00</span></div>
-          </div>
-        </div>
-        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
-          <a href="https://mpdn.kemkes.go.id/masuk" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
-            Buka Portal MPDN <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-          </a>
-          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(1)">Ubah Status</button>
-        </div>
+      <!-- Loading State / Kartu akan di-render di sini oleh JavaScript -->
+      <div class="col-span-full text-center py-10 text-slate-500">
+        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i>
+        <p>Memuat data laporan...</p>
       </div>
-
-      <!-- Kartu 2: SITB (TB) -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
-        <div class="p-6">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-amber-50 text-amber-600 border border-amber-200">Tuberkulosis</span>
-              <h3 class="text-lg font-bold text-slate-800 mt-1">SITB Online</h3>
-            </div>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
-              <i class="fa-solid fa-check mr-1"></i> Sudah Lapor
-            </span>
-          </div>
-          <p class="text-xs text-slate-500 mb-4">Sistem Informasi Tuberkulosis terintegrasi pengobatan dan hasil lab.</p>
-          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
-            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">Tim TB DOTS</strong></div>
-            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 10 Tiap Bulan</strong></div>
-            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">28 Agu 2026, 15:30</span></div>
-          </div>
-        </div>
-        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
-          <a href="https://sitb.kemkes.go.id" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
-            Buka Portal SITB <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-          </a>
-          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(2)">Ubah Status</button>
-        </div>
-      </div>
-
-      <!-- Kartu 3: SIHA (HIV/AIDS) -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
-        <div class="p-6">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200">HIV / AIDS</span>
-              <h3 class="text-lg font-bold text-slate-800 mt-1">SIHA 2.1</h3>
-            </div>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-700">
-              <i class="fa-solid fa-xmark mr-1"></i> Belum Lapor
-            </span>
-          </div>
-          <p class="text-xs text-slate-500 mb-4">Pencatatan konseling, testing HIV, dan pengobatan ART.</p>
-          <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
-            <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">Klinik VCT / Poli HIV</strong></div>
-            <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal 15 Tiap Bulan</strong></div>
-            <div class="flex justify-between"><span>Terakhir Diperiksa:</span> <span class="text-slate-500">29 Agu 2026, 07:00</span></div>
-          </div>
-        </div>
-        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
-          <a href="https://siha.kemkes.go.id" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
-            Buka Portal SIHA <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-          </a>
-          <button class="text-xs text-slate-500 hover:text-slate-700 font-medium" onclick="toggleManual(3)">Ubah Status</button>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Container Iframe Embedded -->
+    <div id="iframeContainer" class="hidden mt-10 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col" style="height: 85vh;">
+      <div class="bg-slate-800 text-white px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-window-maximize text-slate-300"></i>
+            <span id="iframeTitle" class="text-sm font-semibold tracking-wide">Memuat Portal...</span>
+        </div>
+        <div class="flex space-x-3">
+             <a id="iframeExternalLink" href="#" target="_blank" class="text-xs text-slate-300 hover:text-white flex items-center bg-slate-700 px-2 py-1 rounded">
+                Buka di Tab Baru <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
+            </a>
+            <button onclick="closeIframe()" class="text-xs text-white bg-rose-600 hover:bg-rose-500 px-3 py-1 rounded shadow transition">
+            <i class="fa-solid fa-xmark mr-1"></i> Tutup
+            </button>
+        </div>
+      </div>
+      <!-- Spinner Loading Iframe -->
+       <div id="iframeLoading" class="w-full h-full flex flex-col items-center justify-center bg-slate-50 absolute z-0">
+          <i class="fa-solid fa-circle-notch fa-spin text-indigo-500 text-3xl mb-3"></i>
+          <p class="text-slate-500 text-sm">Menghubungkan ke server Kemenkes...</p>
+      </div>
+      <iframe id="embeddedFrame" src="" class="w-full h-full border-none relative z-10 bg-white" onload="document.getElementById('iframeLoading').style.display='none'"></iframe>
+    </div>
+
   </main>
 
   <script>
+    // --- Setup Periode Bulan Berjalan ---
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const d = new Date();
+    document.getElementById('currentPeriodDisplay').innerText = months[d.getMonth()] + " " + d.getFullYear();
+
+    // --- Fetch & Render Data ---
     async function loadReports() {
       try {
         const res = await fetch('/api/reports');
         const data = await res.json();
 
+        // Hitung Ringkasan
         let total = data.length;
         let done = data.filter(r => r.status === 'SUDAH').length;
         let pending = total - done;
@@ -174,39 +120,44 @@
         document.getElementById('pendingCount').innerText = pending;
 
         const container = document.getElementById('cardContainer');
-        container.innerHTML = '';
+        container.innerHTML = ''; // Bersihkan loading
 
+        // Render Kartu
         data.forEach(r => {
           const isSudah = r.status === 'SUDAH';
-          const badgeClass = isSudah ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
+          const badgeClass = isSudah ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-rose-100 text-rose-700 border-rose-200';
           const badgeIcon = isSudah ? 'fa-check' : 'fa-xmark';
           const badgeText = isSudah ? 'Sudah Lapor' : 'Belum Lapor';
+          const btnStatusText = isSudah ? 'Tandai Belum' : 'Tandai Selesai';
+          const btnStatusClass = isSudah ? 'text-amber-600 hover:text-amber-700' : 'text-emerald-600 hover:text-emerald-700';
 
           const card = `
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between">
-              <div class="p-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+              <div class="p-5">
                 <div class="flex items-start justify-between mb-3">
                   <div>
                     <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">${r.category}</span>
-                    <h3 class="text-lg font-bold text-slate-800 mt-1">${r.name}</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mt-1.5 leading-tight">${r.name}</h3>
                   </div>
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${badgeClass}">
+                  <span class="inline-flex items-center px-2 py-1 rounded text-[11px] font-semibold border ${badgeClass}">
                     <i class="fa-solid ${badgeIcon} mr-1"></i> ${badgeText}
                   </span>
                 </div>
-                <p class="text-xs text-slate-500 mb-4">${r.description}</p>
-                <div class="text-xs text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
+                <p class="text-[13px] text-slate-500 mb-4 line-clamp-2">${r.description}</p>
+                <div class="text-[12px] text-slate-500 space-y-1.5 border-t border-slate-100 pt-3">
                   <div class="flex justify-between"><span>PIC:</span> <strong class="text-slate-700">${r.pic}</strong></div>
-                  <div class="flex justify-between"><span>Deadline:</span> <strong class="text-slate-700">Tanggal ${r.deadline_day}</strong></div>
-                  <div class="flex justify-between"><span>Pengecekan:</span> <span class="text-slate-500">${r.last_checked || '-'}</span></div>
+                  <div class="flex justify-between"><span>Tenggat:</span> <strong class="text-rose-600">Tanggal ${r.deadline_day}</strong></div>
+                  <div class="flex justify-between"><span>Update:</span> <span class="text-slate-400 italic">${r.last_checked || '-'}</span></div>
                 </div>
               </div>
-              <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between">
-                <a href="${r.portal_url}" target="_blank" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center">
-                  Buka Portal <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-[10px]"></i>
-                </a>
-                <button class="text-xs text-slate-600 hover:text-indigo-600 font-semibold cursor-pointer" onclick="toggleStatus('${r.id}')">
-                  Ubah Status
+              <div class="bg-slate-50 border-t border-slate-100 p-3 grid grid-cols-2 gap-2">
+                 <!-- Tombol Embedded Buka Proxy URL -->
+                <button onclick="openEmbedded('${r.proxy_url}', '${r.name}', '${r.portal_url}')" class="flex items-center justify-center w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded transition shadow-sm">
+                  Buka Portal <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                </button>
+                <!-- Tombol Checklist Manual -->
+                <button onclick="toggleStatus('${r.id}')" class="flex items-center justify-center w-full py-2 bg-white border border-slate-300 hover:bg-slate-50 ${btnStatusClass} text-xs font-semibold rounded transition shadow-sm">
+                  ${btnStatusText} <i class="fa-solid fa-check-double ml-2"></i>
                 </button>
               </div>
             </div>
@@ -214,30 +165,47 @@
           container.innerHTML += card;
         });
       } catch (err) {
-        console.error('Gagal mengambil data:', err);
+        document.getElementById('cardContainer').innerHTML = `<div class="col-span-full text-center py-10 text-rose-500"><i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i><p>Gagal memuat data dari server.</p></div>`;
+        console.error('Fetch error:', err);
       }
     }
 
+    // --- Fungsi Ubah Status (Manual Checklist) ---
     async function toggleStatus(id) {
-      await fetch(`/api/reports/${id}/toggle`, { method: 'POST' });
-      loadReports();
-    }
-
-    async function triggerAutoCheck() {
-      const icon = document.getElementById('syncIcon');
-      icon.classList.add('fa-spin');
+      if(!confirm('Anda yakin ingin mengubah status pelaporan ini?')) return;
       try {
-        await fetch('/api/check-now', { method: 'POST' });
-        await loadReports();
-        alert('Sinkronisasi status selesai!');
+        await fetch(\`/api/reports/\${id}/toggle\`, { method: 'POST' });
+        loadReports(); // Refresh data setelah update
       } catch (err) {
-        alert('Gagal melakukan pengecekan otomatis');
-      } finally {
-        icon.classList.remove('fa-spin');
+        alert('Gagal mengubah status.');
       }
     }
 
-    // Jalankan saat halaman dibuka
+    // --- Fungsi Iframe / Embedded Web ---
+    function openEmbedded(proxyUrl, title, originalUrl) {
+      const container = document.getElementById('iframeContainer');
+      const iframe = document.getElementById('embeddedFrame');
+      const loading = document.getElementById('iframeLoading');
+      
+      loading.style.display = 'flex'; // Tampilkan loading
+      document.getElementById('iframeTitle').innerText = title;
+      document.getElementById('iframeExternalLink').href = originalUrl; // Fallback jika iframe tetap error
+      
+      iframe.src = proxyUrl; // Gunakan URL Proxy!
+      
+      container.classList.remove('hidden');
+      setTimeout(() => {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    function closeIframe() {
+      const container = document.getElementById('iframeContainer');
+      container.classList.add('hidden');
+      document.getElementById('embeddedFrame').src = ''; // Bersihkan source
+    }
+
+    // --- Inisialisasi ---
     document.addEventListener('DOMContentLoaded', loadReports);
   </script>
 </body>
